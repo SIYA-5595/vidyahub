@@ -4,6 +4,15 @@ import { useState, useEffect } from "react";
 import { X, Loader2, Shield, User } from "lucide-react";
 import { UserData, AddUserData } from "@/hooks/useUsers";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 interface AdminUserFormProps {
   isOpen: boolean;
@@ -41,8 +50,6 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
     setErrors({});
   }, [initialData, isOpen]);
 
-  if (!isOpen) return null;
-
   const validate = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.name.trim()) newErrors.name = "Identity label is required";
@@ -79,24 +86,21 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-white w-full max-w-xl rounded-[3rem] shadow-2xl border border-secondary/10 overflow-hidden transform animate-in slide-in-from-bottom-8 duration-500">
-        <div className="p-8 border-b border-secondary/10 flex items-center justify-between bg-slate-50/50">
-          <h2 className="text-xl font-black italic uppercase tracking-tight text-slate-900">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-xl p-0 border-none bg-white rounded-[3rem] overflow-hidden shadow-2xl">
+        <DialogHeader className="p-8 border-b border-secondary/10 bg-slate-50/50">
+          <DialogTitle className="text-xl font-black italic uppercase tracking-tight text-slate-900">
             {initialData ? "Update Registry Node" : "Register Access Identity"}
-          </h2>
-          <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors">
-            <X className="h-6 w-6 text-slate-400" />
-          </button>
-        </div>
+          </DialogTitle>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="p-10 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Identity Label</label>
-              <input 
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Identity Label</Label>
+              <Input 
                 className={cn(
-                  "w-full h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none",
+                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
                   errors.name && "ring-2 ring-rose-500/50 bg-rose-50/50"
                 )}
                 placeholder="Name"
@@ -109,12 +113,12 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
               {errors.name && <p className="text-[10px] font-bold text-rose-500 ml-2 uppercase italic">{errors.name}</p>}
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Node Address</label>
-              <input 
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Node Address</Label>
+              <Input 
                 type="email"
                 disabled={!!initialData}
                 className={cn(
-                  "w-full h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none disabled:opacity-50",
+                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none disabled:opacity-50",
                   errors.email && "ring-2 ring-rose-500/50 bg-rose-50/50"
                 )}
                 placeholder="email@vidyahub.edu"
@@ -128,11 +132,11 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
             </div>
             {!initialData && (
               <div className="space-y-2 col-span-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Encryption Key (Password)</label>
-                <input 
+                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Encryption Key (Password)</Label>
+                <Input 
                   type="password"
                   className={cn(
-                    "w-full h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus:ring-2 focus:ring-primary/20 transition-all outline-none",
+                    "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
                     errors.password && "ring-2 ring-rose-500/50 bg-rose-50/50"
                   )}
                   placeholder="Minimum 6 characters"
@@ -148,36 +152,44 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Access Protocol</label>
+            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Access Protocol</Label>
             <div className="flex gap-4 p-2 bg-slate-50 rounded-2xl border border-secondary/10">
-              <button
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setFormData({ ...formData, role: "student" })}
-                className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl transition-all font-black uppercase text-[10px] tracking-widest ${formData.role === 'student' ? 'bg-white text-blue-600 shadow-md ring-1 ring-blue-100' : 'text-slate-400 hover:text-slate-600'}`}
+                className={cn(
+                  "flex-1 flex items-center justify-center gap-3 px-6 py-4 h-auto rounded-xl transition-all font-black uppercase text-[10px] tracking-widest",
+                  formData.role === 'student' ? 'bg-white text-blue-600 shadow-md ring-1 ring-blue-100' : 'text-slate-400 hover:text-slate-600'
+                )}
               >
                 <User className="h-4 w-4" />
                 Student
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="ghost"
                 onClick={() => setFormData({ ...formData, role: "admin" })}
-                className={`flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl transition-all font-black uppercase text-[10px] tracking-widest ${formData.role === 'admin' ? 'bg-white text-emerald-600 shadow-md ring-1 ring-emerald-100' : 'text-slate-400 hover:text-slate-600'}`}
+                className={cn(
+                  "flex-1 flex items-center justify-center gap-3 px-6 py-4 h-auto rounded-xl transition-all font-black uppercase text-[10px] tracking-widest",
+                  formData.role === 'admin' ? 'bg-white text-emerald-600 shadow-md ring-1 ring-emerald-100' : 'text-slate-400 hover:text-slate-600'
+                )}
               >
                 <Shield className="h-4 w-4" />
                 Admin
-              </button>
+              </Button>
             </div>
           </div>
 
-          <button 
+          <Button 
             type="submit"
             disabled={loading}
             className="w-full h-18 bg-primary hover:opacity-90 text-white rounded-2xl font-black italic uppercase tracking-widest text-sm shadow-xl shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3"
           >
             {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : (initialData ? "Apply Modification" : "Authorized Creation")}
-          </button>
+          </Button>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

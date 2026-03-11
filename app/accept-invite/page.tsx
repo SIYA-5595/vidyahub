@@ -171,8 +171,8 @@ function AcceptInviteContent() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#f8fafc] gap-6">
         <div className="relative">
-          <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full animate-pulse" />
-          <Loader2 className="h-14 w-14 text-primary animate-spin relative" />
+          <div className="absolute inset-0 bg-red-500/20 blur-2xl rounded-full animate-pulse" />
+          <Loader2 className="h-14 w-14 text-red-500 animate-spin relative" />
         </div>
         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
           Verifying Invite Link…

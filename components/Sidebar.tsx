@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },
@@ -105,13 +106,14 @@ export default function Sidebar() {
       </nav>
 
       <div className="p-4 border-t border-white/5">
-        <button 
+        <Button 
+          variant="ghost" 
           onClick={handleLogout}
-          className="flex w-full items-center gap-4 px-6 py-4 rounded-2xl text-rose-400 hover:bg-rose-500/10 transition-all font-bold group"
+          className="flex w-full items-center justify-start gap-4 px-6 py-8 rounded-2xl text-rose-400 hover:bg-rose-500/10 hover:text-rose-400 transition-all font-bold group border-none h-auto"
         >
           <LogOut className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
           <span className="text-sm">Log Out Node</span>
-        </button>
+        </Button>
       </div>
     </aside>
   );
