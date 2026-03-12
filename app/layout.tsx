@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
@@ -13,10 +14,32 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "VidyaHub - University Management System",
   description: "Manage your university life with ease.",
+=======
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Providers } from "./providers";
+import { MainLayout } from "@/components/layout/MainLayout";
+import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "VidyaHub | Administrative Intelligence",
+  description: "Centralized campus management and administrative portal for VidyaHub ecosystem.",
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
 };
 
 export default function RootLayout({
   children,
+<<<<<<< HEAD
 }: {
   children: React.ReactNode;
 }) {
@@ -28,6 +51,20 @@ export default function RootLayout({
             {children}
             <Sonner />
           </TooltipProvider>
+=======
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <Providers>
+          <MainLayout>
+            {children}
+          </MainLayout>
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
         </Providers>
       </body>
     </html>

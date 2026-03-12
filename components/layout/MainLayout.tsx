@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -365,6 +366,14 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           {children}
         </div>
       </main>
+=======
+export function MainLayout({ children }: { children: React.ReactNode }) {
+  // For the frontend-only UI demo, we just render the children.
+  // Sidebar and Navbar are included in the individual admin pages as requested by the folder structure.
+  return (
+    <div className="min-h-screen bg-[#f8fafc]">
+      {children}
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
     </div>
   );
 }
