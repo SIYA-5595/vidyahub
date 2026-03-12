@@ -1,26 +1,112 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------- THEME TOKENS ---------------- */
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-muted: hsl(var(--sidebar-muted));
+  --color-sidebar-border: hsl(var(--sidebar-border));
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ---------------- ROOT COLORS ---------------- */
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* PAGE */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    /* CARD */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* PRIMARY CYAN */
+    --primary: 185 100% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    /* SECONDARY */
+    --secondary: 210 40% 96%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    /* BORDER */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --input-bg: 0 0% 100%;
+    --ring: 185 100% 40%;
+
+    /* SIDEBAR */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 20% 92%;
+    --sidebar-primary: 185 100% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 40% 18%;
+    --sidebar-muted: 215 16% 60%;
+    --sidebar-border: 222 30% 20%;
+
+    /* GRADIENT */
+    --gradient-sidebar: linear-gradient(180deg, #0b1220 0%, #0e1a2f 100%);
+
+    --radius: 0.75rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------------- BASE ---------------- */
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    @apply antialiased;
+  }
+}
+
+h1, h2, h3, h4, .text-header {
+  @apply text-slate-900 font-bold tracking-tight;
+  letter-spacing: -0.022em;
+}
+
+.text-label {
+  @apply text-sm font-semibold text-slate-500;
+  letter-spacing: -0.01em;
+}
+
+.tracking-tight-ui {
+  letter-spacing: -0.015em;
+}
+
+.tracking-tighter-ui {
+  letter-spacing: -0.03em;
+}
+
+/* ---------------- CARDS ---------------- */
+
+.shadow-card {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
