@@ -6,6 +6,22 @@ import {
   onSnapshot, 
   query, 
   orderBy, 
+<<<<<<< HEAD
+  limit,
+  Timestamp 
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
+export interface Announcement {
+  id: string;
+  title: string;
+  message: string;
+  tag: string;
+  createdAt: Timestamp | null;
+}
+
+export function useAnnouncements(maxItems: number = 5) {
+=======
   addDoc, 
   deleteDoc, 
   doc, 
@@ -27,10 +43,28 @@ export interface Announcement {
 
 export function useAnnouncements(limitCount: number = 0) {
   const { user, loading: authLoading } = useAuth();
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+<<<<<<< HEAD
+    const q = query(
+      collection(db, "announcements"), 
+      orderBy("createdAt", "desc"), 
+      limit(maxItems)
+    );
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const list = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as Announcement[];
+      setAnnouncements(list);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching announcements:", error);
+=======
     if (authLoading || !user) return;
 
     // Permission Guard: Anyone authenticated can read announcements
@@ -56,10 +90,16 @@ export function useAnnouncements(limitCount: number = 0) {
       if (err.code !== 'permission-denied' && !err.message.toLowerCase().includes("permission")) {
         console.error("Error fetching announcements:", err);
       }
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
       setLoading(false);
     });
 
     return () => unsubscribe();
+<<<<<<< HEAD
+  }, [maxItems]);
+
+  return { announcements, loading };
+=======
   }, [limitCount, user, authLoading]);
 
   const postAnnouncement = async (announcement: Omit<Announcement, "id" | "createdAt">) => {
@@ -80,4 +120,5 @@ export function useAnnouncements(limitCount: number = 0) {
   };
 
   return { announcements, loading, postAnnouncement, deleteAnnouncement };
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
 }

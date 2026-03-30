@@ -1,9 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+<<<<<<< HEAD
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------- THEME TOKENS ---------------- */
+
+=======
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -21,8 +29,11 @@
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-primary: hsl(var(--sidebar-primary));
   --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-muted: hsl(var(--sidebar-muted));
   --color-sidebar-border: hsl(var(--sidebar-border));
 }
+
+/* ---------------- ROOT COLORS ---------------- */
 
 @layer base {
   :root {
@@ -124,4 +135,4 @@
 .shadow-premium-hover {
   box-shadow: 0 20px 25px -5px rgba(5, 11, 20, 0.5),
               0 8px 10px -6px rgba(5, 11, 20, 0.3);
-}
+}

@@ -38,5 +38,17 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+<<<<<<< HEAD
+next-env.d.ts
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+=======
 # firebase
 serviceAccountKey.json
+>>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
