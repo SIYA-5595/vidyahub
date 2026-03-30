@@ -1,38 +1,26 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "./providers";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
+import { Toaster } from "sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "VidyaHub | Administrative Intelligence",
-  description: "Centralized campus management and administrative portal for VidyaHub ecosystem.",
+export const metadata = {
+  title: "VidyaHub - Intelligence Interface",
+  description: "Advanced Academic Management System",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en">
+      <body className={inter.className}>
         <Providers>
-          <MainLayout>
-            {children}
-          </MainLayout>
+          {children}
+          <Toaster position="top-center" richColors />
         </Providers>
       </body>
     </html>

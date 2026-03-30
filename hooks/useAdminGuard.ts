@@ -15,9 +15,18 @@ export default function useAdminGuard() {
         return;
       }
 
-      const snap = await getDoc(doc(db, "users", user.uid));
-      if (snap.data()?.role !== "admin") {
-        router.push("/login");
+      try {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.data()?.role !== "admin") {
+          router.push("/login");
+        }
+      } catch (err: any) {
+        const isOffline = err.code === 'unavailable' || err.message?.toLowerCase().includes("offline");
+        if (!isOffline && err.code !== 'permission-denied') {
+          console.error("[useAdminGuard] Error:", err);
+          router.push("/login");
+        }
+        // If offline, we might want to let the session continue if data is in cache
       }
     });
 

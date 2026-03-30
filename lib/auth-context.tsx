@@ -54,9 +54,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               userDoc = await getDoc(doc(db, "users", firebaseUser.uid));
               break; 
             } catch (error: any) {
-              if (error.code === 'permission-denied' && retries > 1) {
-                console.warn(`[auth-context] Retrying user doc fetch (${4 - retries}/3)...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
+              const isOffline = error.code === 'unavailable' || error.message?.toLowerCase().includes("offline");
+              
+              if ((error.code === 'permission-denied' || isOffline) && retries > 1) {
+                console.warn(`[auth-context] ${isOffline ? 'Offline' : 'Permission'} issue, retrying (${4 - retries}/3)...`);
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for offline
                 retries--;
               } else {
                 throw error;
@@ -81,9 +83,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(null);
           }
         } catch (error: any) {
-          // Silent permission denied to keep console clean
-          if (error.code !== 'permission-denied') {
+          // Graceful handling of offline/permission errors
+          const isOffline = error.code === 'unavailable' || error.message?.toLowerCase().includes("offline");
+          if (error.code !== 'permission-denied' && !isOffline) {
             console.error("[auth-context] Error fetching user data:", error);
+          } else if (isOffline) {
+            console.warn("[auth-context] Working in offline mode.");
+            // We could potentially set a 'guest' user or just keep it null
           }
           setUser(null);
         }

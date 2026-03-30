@@ -87,21 +87,21 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-xl p-0 border-none bg-white rounded-[3rem] overflow-hidden shadow-2xl">
-        <DialogHeader className="p-8 border-b border-secondary/10 bg-slate-50/50">
-          <DialogTitle className="text-xl font-black italic uppercase tracking-tight text-slate-900">
+      <DialogContent className="sm:max-w-xl p-0 border border-border bg-card rounded-[3rem] overflow-hidden shadow-2xl">
+        <DialogHeader className="p-8 border-b border-border bg-background/50">
+          <DialogTitle className="text-xl font-black italic uppercase tracking-tight text-foreground">
             {initialData ? "Update Registry Node" : "Register Access Identity"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="p-10 space-y-8">
+        <form onSubmit={handleSubmit} className="p-10 space-y-8 bg-card">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Identity Label</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Identity Label</Label>
               <Input 
                 className={cn(
-                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
-                  errors.name && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                  "h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none placeholder:text-muted-foreground/20 italic",
+                  errors.name && "ring-2 ring-rose-500/50 bg-rose-500/10"
                 )}
                 placeholder="Name"
                 value={formData.name}
@@ -113,13 +113,13 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
               {errors.name && <p className="text-[10px] font-bold text-rose-500 ml-2 uppercase italic">{errors.name}</p>}
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Node Address</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Node Address</Label>
               <Input 
                 type="email"
                 disabled={!!initialData}
                 className={cn(
-                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none disabled:opacity-50",
-                  errors.email && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                  "h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none disabled:opacity-50 placeholder:text-muted-foreground/20 italic",
+                  errors.email && "ring-2 ring-rose-500/50 bg-rose-500/10"
                 )}
                 placeholder="email@vidyahub.edu"
                 value={formData.email}
@@ -132,12 +132,12 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
             </div>
             {!initialData && (
               <div className="space-y-2 col-span-2">
-                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Encryption Key (Password)</Label>
+                <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Encryption Key (Password)</Label>
                 <Input 
                   type="password"
                   className={cn(
-                    "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
-                    errors.password && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                    "h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none placeholder:text-muted-foreground/20 italic",
+                    errors.password && "ring-2 ring-rose-500/50 bg-rose-500/10"
                   )}
                   placeholder="Minimum 6 characters"
                   value={formData.password}
@@ -152,15 +152,15 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Access Protocol</Label>
-            <div className="flex gap-4 p-2 bg-slate-50 rounded-2xl border border-secondary/10">
+            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Access Protocol</Label>
+            <div className="flex gap-4 p-2 bg-background/50 rounded-2xl border border-border">
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => setFormData({ ...formData, role: "student" })}
                 className={cn(
                   "flex-1 flex items-center justify-center gap-3 px-6 py-4 h-auto rounded-xl transition-all font-black uppercase text-[10px] tracking-widest",
-                  formData.role === 'student' ? 'bg-white text-blue-600 shadow-md ring-1 ring-blue-100' : 'text-slate-400 hover:text-slate-600'
+                  formData.role === 'student' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-muted-foreground hover:bg-white/5'
                 )}
               >
                 <User className="h-4 w-4" />
@@ -172,7 +172,7 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
                 onClick={() => setFormData({ ...formData, role: "admin" })}
                 className={cn(
                   "flex-1 flex items-center justify-center gap-3 px-6 py-4 h-auto rounded-xl transition-all font-black uppercase text-[10px] tracking-widest",
-                  formData.role === 'admin' ? 'bg-white text-emerald-600 shadow-md ring-1 ring-emerald-100' : 'text-slate-400 hover:text-slate-600'
+                  formData.role === 'admin' ? 'bg-accent text-accent-foreground shadow-lg' : 'text-muted-foreground hover:bg-white/5'
                 )}
               >
                 <Shield className="h-4 w-4" />
@@ -184,7 +184,7 @@ export default function AdminUserForm({ isOpen, onClose, onSubmit, initialData }
           <Button 
             type="submit"
             disabled={loading}
-            className="w-full h-18 bg-primary hover:opacity-90 text-white rounded-2xl font-black italic uppercase tracking-widest text-sm shadow-xl shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3"
+            className="w-full h-16 bg-primary hover:opacity-90 text-primary-foreground rounded-2xl font-black italic uppercase tracking-widest text-sm shadow-xl shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3 border-none"
           >
             {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : (initialData ? "Apply Modification" : "Authorized Creation")}
           </Button>

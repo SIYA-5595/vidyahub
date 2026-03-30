@@ -33,8 +33,8 @@ export function useAnnouncements(limitCount: number = 0) {
   useEffect(() => {
     if (authLoading || !user) return;
 
-    // Permission Guard
-    if (!ADMIN_ROLES.includes(user.role)) {
+    // Permission Guard: Anyone authenticated can read announcements
+    if (!user) {
       setLoading(false);
       return;
     }

@@ -10,7 +10,8 @@ import {
   updateDoc,
   deleteDoc, 
   doc, 
-  serverTimestamp 
+  serverTimestamp,
+  where 
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth, ADMIN_ROLES } from "@/lib/auth-context";
@@ -37,13 +38,14 @@ export function useResults() {
   useEffect(() => {
     if (authLoading || !user) return;
 
-    // Permission Guard
-    if (!ADMIN_ROLES.includes(user.role)) {
-      setLoading(false);
-      return;
+    const isAdmin = ADMIN_ROLES.includes(user.role);
+    
+    let q = query(collection(db, "results"), orderBy("createdAt", "desc"));
+    
+    if (!isAdmin) {
+      // Students only see their own results
+      q = query(collection(db, "results"), where("studentId", "==", user.uid));
     }
-
-    const q = query(collection(db, "results"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const list = snapshot.docs.map(doc => ({
         id: doc.id,

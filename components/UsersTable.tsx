@@ -119,18 +119,18 @@ export default function UsersTable() {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <Loader2 className="h-10 w-10 text-primary animate-spin" />
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-slate-400">Synchronizing Nexus</p>
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground">Synchronizing Nexus</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <Card className="p-8 bg-rose-50 border border-rose-100 rounded-[2rem] flex flex-col items-center gap-4 text-center">
+      <Card className="p-8 bg-rose-500/10 border border-rose-500/20 rounded-[2rem] flex flex-col items-center gap-4 text-center">
         <AlertCircle className="h-10 w-10 text-rose-500" />
         <div>
-          <h3 className="font-black text-rose-900 uppercase tracking-tight">Sync Failure</h3>
-          <p className="text-sm text-rose-600 mt-1">{error.message}</p>
+          <h3 className="font-black text-rose-500 uppercase tracking-tight">Sync Failure</h3>
+          <p className="text-sm text-rose-400 mt-1">{error.message}</p>
         </div>
       </Card>
     );
@@ -142,12 +142,12 @@ export default function UsersTable() {
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96 group">
           <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none z-10">
-            <Search className="h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors" />
+            <Search className="h-4 w-4 text-muted-foreground/40 group-focus-within:text-primary transition-colors" />
           </div>
           <Input
             type="text"
             placeholder="Search indexing..."
-            className="w-full pl-12 pr-4 h-12 bg-white border border-slate-200 rounded-2xl text-sm focus-visible:ring-4 focus-visible:ring-primary/5 focus-visible:border-primary transition-all shadow-sm"
+            className="w-full pl-12 pr-4 h-12 bg-card border border-border rounded-2xl text-sm text-foreground focus-visible:ring-4 focus-visible:ring-primary/5 focus-visible:border-primary transition-all shadow-sm placeholder:text-muted-foreground/20"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -156,7 +156,7 @@ export default function UsersTable() {
           />
         </div>
 
-        <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm">
+        <div className="flex bg-card p-1 rounded-xl border border-border shadow-sm">
           {["all", "admin", "student"].map((role) => (
             <Button
               key={role}
@@ -168,7 +168,7 @@ export default function UsersTable() {
               }}
               className={cn(
                 "px-4 h-9 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all",
-                roleFilter === role ? "bg-slate-900 text-white shadow-lg hover:bg-slate-800 hover:text-white" : "text-slate-500 hover:bg-slate-50"
+                roleFilter === role ? "bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 hover:text-primary-foreground" : "text-muted-foreground hover:bg-white/5"
               )}
             >
               {role}s
@@ -178,36 +178,36 @@ export default function UsersTable() {
       </div>
 
       {/* Table Card */}
-      <Card className="rounded-[2.5rem] border border-slate-200/60 shadow-xl shadow-slate-200/40 overflow-hidden">
-        <CardContent className="p-0">
+      <Card className="rounded-[2.5rem] border border-border bg-card shadow-premium overflow-hidden">
+        <CardContent className="p-0 overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-slate-50/50 hover:bg-slate-50/50 border-b border-slate-100">
-                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Identity Nodes</TableHead>
-                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Nexus Access & Status</TableHead>
-                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Temporal Stamp</TableHead>
-                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right">Node Controls</TableHead>
+              <TableRow className="bg-background/30 hover:bg-background/30 border-b border-border">
+                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Identity Nodes</TableHead>
+                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Nexus Access & Status</TableHead>
+                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Temporal Stamp</TableHead>
+                <TableHead className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 text-right">Node Controls</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {currentItems.map((user) => (
                 <TableRow key={user.uid} className={cn(
-                  "hover:bg-slate-50/50 transition-colors group border-slate-100",
+                  "hover:bg-background/20 transition-colors group border-border",
                   user.status === "blocked" && "opacity-60 grayscale-[0.5]"
                 )}>
                   <TableCell className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <Avatar className={cn(
                         "h-12 w-12 rounded-2xl flex items-center justify-center font-black italic shadow-sm group-hover:scale-110 transition-transform",
-                        user.status === "blocked" ? "bg-slate-200 text-slate-500" : (user.role === 'admin' ? "bg-emerald-100 text-emerald-600" : "bg-primary/10 text-primary")
+                        user.status === "blocked" ? "bg-muted text-muted-foreground" : (user.role === 'admin' ? "bg-accent/10 text-accent" : "bg-primary/10 text-primary")
                       )}>
                         <AvatarFallback className="bg-transparent">{user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="text-sm font-black text-slate-900 tracking-tight">{user.name}</p>
+                        <p className="text-sm font-black text-foreground tracking-tight">{user.name}</p>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <Mail className="h-3 w-3 text-slate-400" />
-                          <p className="text-xs font-bold text-slate-400">{user.email}</p>
+                          <Mail className="h-3 w-3 text-muted-foreground/40" />
+                          <p className="text-xs font-bold text-muted-foreground/40">{user.email}</p>
                         </div>
                       </div>
                     </div>
@@ -225,42 +225,42 @@ export default function UsersTable() {
                         <Badge 
                           className={cn(
                             "px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm",
-                            user.status === "active" ? "text-emerald-600 bg-white border border-emerald-100 hover:bg-white" : "text-rose-600 bg-white border border-rose-100 hover:bg-white"
+                            user.status === "active" ? "text-emerald-500 bg-emerald-500/10 border border-emerald-500/10" : "text-rose-500 bg-rose-500/10 border border-rose-500/10"
                           )}
                         >
                           {user.status}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2 px-1">
-                        <Tag className="h-3 w-3 text-slate-300" />
-                        <span className="text-[10px] font-black text-slate-400 tracking-widest uppercase">{user.uid}</span>
+                        <Tag className="h-3 w-3 text-muted-foreground/20" />
+                        <span className="text-[10px] font-black text-muted-foreground/20 tracking-widest uppercase">{user.uid}</span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="px-8 py-6">
                     <div className="flex items-center gap-3">
-                      <Calendar className="h-4 w-4 text-slate-300" />
+                      <Calendar className="h-4 w-4 text-muted-foreground/20" />
                       <div className="flex flex-col">
-                        <p className="text-[10px] font-black text-slate-900 uppercase tracking-widest">
+                        <p className="text-[10px] font-black text-foreground uppercase tracking-widest">
                           {user.createdAt?.seconds 
                             ? new Date(user.createdAt.seconds * 1000).toLocaleDateString()
                             : "Legacy Record"}
                         </p>
-                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.1em]">Verified Node</p>
+                        <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-[0.1em]">Verified Node</p>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="px-8 py-6 text-right">
                     <div className="flex items-center justify-end gap-2">
                        {actionLoading === user.uid ? (
-                         <Loader2 className="h-5 w-5 text-slate-300 animate-spin" />
+                         <Loader2 className="h-5 w-5 text-primary animate-spin" />
                        ) : (
                          <>
                             <Button 
                               variant="ghost"
                               size="icon"
                               onClick={() => handleEditClick(user)}
-                              className="h-10 w-10 text-slate-400 hover:bg-slate-100 hover:text-primary rounded-xl transition-all"
+                              className="h-10 w-10 text-muted-foreground/40 hover:bg-primary/10 hover:text-primary rounded-xl transition-all"
                               title="Modify Node"
                             >
                               <Pencil className="h-5 w-5" />
@@ -272,8 +272,8 @@ export default function UsersTable() {
                               className={cn(
                                 "h-10 w-10 rounded-xl transition-all",
                                 user.status === "active" 
-                                  ? "text-slate-400 hover:bg-rose-50 hover:text-rose-500" 
-                                  : "text-emerald-500 hover:bg-emerald-50"
+                                  ? "text-muted-foreground/40 hover:bg-rose-500/10 hover:text-rose-500" 
+                                  : "text-emerald-500 hover:bg-emerald-500/10"
                               )}
                               title={user.status === "active" ? "Revoke Access" : "Restore Access"}
                             >
@@ -283,7 +283,7 @@ export default function UsersTable() {
                               variant="ghost"
                               size="icon"
                               onClick={() => handleDelete(user)}
-                              className="h-10 w-10 text-slate-400 hover:bg-rose-100 hover:text-rose-600 rounded-xl transition-all"
+                              className="h-10 w-10 text-muted-foreground/40 hover:bg-rose-500/20 hover:text-rose-500 rounded-xl transition-all"
                               title="Purge Node"
                             >
                               <Trash2 className="h-5 w-5" />
@@ -296,22 +296,22 @@ export default function UsersTable() {
               ))}
               {filteredUsers.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={4} className="px-8 py-20 text-center">
+                  <TableCell colSpan={4} className="px-8 py-20 text-center border-none">
                     <div className="flex flex-col items-center gap-3 opacity-20">
-                      <Search className="h-12 w-12" />
-                      <p className="text-sm font-black uppercase tracking-widest">Zero Nodes Found</p>
+                      <Search className="h-12 w-12 text-muted-foreground" />
+                      <p className="text-sm font-black uppercase tracking-widest text-muted-foreground">Zero Nodes Found</p>
                     </div>
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
-          </Table>
+           </Table>
         </CardContent>
 
         {/* Pagination */}
-        <div className="px-8 py-5 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-            Nodes <span className="text-slate-900">{indexOfFirstItem + 1}</span>-<span className="text-slate-900">{Math.min(indexOfLastItem, filteredUsers.length)}</span> of <span className="text-slate-900">{filteredUsers.length}</span>
+        <div className="px-8 py-5 bg-background/30 border-t border-border flex items-center justify-between">
+          <p className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">
+            Nodes <span className="text-foreground">{indexOfFirstItem + 1}</span>-<span className="text-foreground">{Math.min(indexOfLastItem, filteredUsers.length)}</span> of <span className="text-foreground">{filteredUsers.length}</span>
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -319,7 +319,7 @@ export default function UsersTable() {
               size="icon"
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="h-9 w-9 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-slate-900 disabled:opacity-30 transition-all shadow-sm"
+              className="h-9 w-9 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground disabled:opacity-30 transition-all shadow-sm"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -333,8 +333,8 @@ export default function UsersTable() {
                   className={cn(
                     "h-8 w-8 rounded-xl text-[10px] font-black transition-all shrink-0",
                     currentPage === i + 1 
-                      ? "bg-slate-900 text-white shadow-lg shadow-slate-900/20 hover:bg-slate-800 hover:text-white" 
-                      : "bg-white border border-slate-200 text-slate-500 hover:border-slate-300"
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 hover:text-primary-foreground" 
+                      : "bg-card border border-border text-muted-foreground hover:border-primary/30"
                   )}
                 >
                   {i + 1}
@@ -346,7 +346,7 @@ export default function UsersTable() {
               size="icon"
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages || totalPages === 0}
-              className="h-9 w-9 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-slate-900 disabled:opacity-30 transition-all shadow-sm"
+              className="h-9 w-9 rounded-xl border border-border bg-card text-muted-foreground hover:text-foreground disabled:opacity-30 transition-all shadow-sm"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>

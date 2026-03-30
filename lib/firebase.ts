@@ -1,8 +1,8 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
-import { getFirestore, initializeFirestore, Firestore, setLogLevel } from "firebase/firestore";
+import { getFirestore, initializeFirestore, Firestore, setLogLevel, enableIndexedDbPersistence } from "firebase/firestore";
 
-setLogLevel('debug');
+setLogLevel('silent'); // Reducing console noise for the user
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,12 +17,11 @@ const firebaseConfig = {
 if (typeof window !== "undefined") {
   console.log("[Firebase] Initializing Nexus Node:", {
     projectId: firebaseConfig.projectId,
-    appId: firebaseConfig.appId?.split(":").slice(-1)[0], // last part for brevity
+    appId: firebaseConfig.appId?.split(":").slice(-1)[0],
     hasApiKey: !!firebaseConfig.apiKey
   });
 }
   
-// Initialize Firebase
 const apps = getApps();
 let app: any;
 let db: Firestore;
@@ -31,11 +30,9 @@ let auth: Auth;
 if (typeof window !== "undefined") {
   const g = window as any;
   
-  // App Singleton - Detect and purge project ID mismatches (crucial for local dev switches)
   const existingDefault = apps.find(a => a.name === "[DEFAULT]");
   if (existingDefault && existingDefault.options.projectId !== firebaseConfig.projectId) {
-    console.warn(`[Firebase] Project mismatch: ${existingDefault.options.projectId} != ${firebaseConfig.projectId}. Re-initializing...`);
-    // Delete existing instances to force fresh creation
+    console.warn(`[Firebase] Project mismatch detected. Resetting singleton.`);
     delete g._firebase_app;
     delete g._firebase_db;
     delete g._firebase_auth;
@@ -46,20 +43,28 @@ if (typeof window !== "undefined") {
   }
   app = g._firebase_app;
 
-  // Auth Singleton
   if (!g._firebase_auth) {
     g._firebase_auth = getAuth(app);
   }
   auth = g._firebase_auth;
 
-  // Firestore Singleton
   if (!g._firebase_db) {
     try {
       g._firebase_db = initializeFirestore(app, {
         ignoreUndefinedProperties: true,
-        experimentalForceLongPolling: true, // Crucial for connection stability fixed earlier
+        experimentalForceLongPolling: true,
       });
-      console.log("[Firebase] Firestore Initialized with protocol: Long-Polling");
+      
+      // Enable Offline Persistence for a smoother experience
+      enableIndexedDbPersistence(g._firebase_db).catch((err) => {
+        if (err.code === 'failed-precondition') {
+          console.warn("[Firebase] Persistence failed: Multiple tabs open");
+        } else if (err.code === 'unimplemented') {
+          console.warn("[Firebase] Persistence failed: Browser doesn't support it");
+        }
+      });
+
+      console.log("[Firebase] Firestore Protocol: Long-Polling + Persistence");
     } catch (e) {
       g._firebase_db = getFirestore(app);
     }

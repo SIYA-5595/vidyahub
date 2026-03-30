@@ -16,6 +16,7 @@ export function useDashboardStats() {
     announcements: 0,
     assignments: 0,
     requests: 0,
+    timetables: 0,
     loading: true
   });
 
@@ -26,13 +27,13 @@ export function useDashboardStats() {
       return;
     }
 
-    // Permission Guard: Only admins should probe these collections
-    if (!ADMIN_ROLES.includes(user.role)) {
+    // Anyone authenticated can probe basic counts
+    if (!user) {
       setStats(prev => ({ ...prev, loading: false }));
       return;
     }
 
-    const collections = ["students", "announcements", "assignments", "requests"];
+    const collections = ["students", "announcements", "assignments", "requests", "timetables"];
     const unsubscribes: (() => void)[] = [];
 
     collections.forEach((colName) => {

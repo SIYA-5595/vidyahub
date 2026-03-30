@@ -9,7 +9,9 @@ import {
   updateDoc, 
   deleteDoc, 
   doc, 
-  serverTimestamp 
+  serverTimestamp,
+  addDoc,
+  where 
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth, ADMIN_ROLES } from "@/lib/auth-context";
@@ -34,13 +36,14 @@ export function useRequests() {
   useEffect(() => {
     if (authLoading || !user) return;
 
-    // Permission Guard
-    if (!ADMIN_ROLES.includes(user.role)) {
-      setLoading(false);
-      return;
+    const isAdmin = ADMIN_ROLES.includes(user.role);
+    
+    let q = query(collection(db, "requests"), orderBy("createdAt", "desc"));
+    
+    if (!isAdmin) {
+      // Students only see their own requests
+      q = query(collection(db, "requests"), where("studentId", "==", user.uid));
     }
-
-    const q = query(collection(db, "requests"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const list = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -68,9 +71,22 @@ export function useRequests() {
     }
   };
 
+  const addRequest = async (data: Omit<RequestItem, "id" | "createdAt" | "status">) => {
+    try {
+      await addDoc(collection(db, "requests"), {
+        ...data,
+        status: "Pending",
+        createdAt: serverTimestamp(),
+      });
+    } catch (err) {
+      console.error("[useRequests] Failed to submit request:", err);
+      throw err;
+    }
+  };
+
   const deleteRequest = async (id: string) => {
     await deleteDoc(doc(db, "requests", id));
   };
 
-  return { requests, loading, updateRequestStatus, deleteRequest };
+  return { requests, loading, addRequest, updateRequestStatus, deleteRequest };
 }

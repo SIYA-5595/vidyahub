@@ -34,11 +34,7 @@ export function useAssignments() {
   useEffect(() => {
     if (authLoading || !user) return;
 
-    // Permission Guard
-    if (!ADMIN_ROLES.includes(user.role)) {
-      setLoading(false);
-      return;
-    }
+    // Anyone authenticated can read assignments
 
     const q = query(collection(db, "assignments"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {

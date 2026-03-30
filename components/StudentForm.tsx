@@ -92,9 +92,9 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-xl p-0 border-none bg-white rounded-[3rem] overflow-hidden shadow-2xl">
-        <DialogHeader className="p-8 border-b border-secondary/10 bg-slate-50/50">
-          <DialogTitle className="text-xl font-black italic uppercase tracking-tight text-slate-900">
+      <DialogContent className="sm:max-w-xl p-0 border border-border bg-card rounded-[3rem] overflow-hidden shadow-2xl">
+        <DialogHeader className="p-8 border-b border-border bg-background/50">
+          <DialogTitle className="text-xl font-black italic uppercase tracking-tight text-foreground">
             {initialData ? "Modify Subject Profile" : "Initialize New Enrollment"}
           </DialogTitle>
         </DialogHeader>
@@ -102,12 +102,13 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
         <form onSubmit={handleSubmit} className="p-10 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Full Name</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Name</Label>
               <Input 
                 className={cn(
-                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
-                  errors.name && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                  "h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none italic placeholder:text-muted-foreground/30",
+                  errors.name && "ring-2 ring-rose-500/50 bg-rose-500/10"
                 )}
+                placeholder="Full Legal Name"
                 value={formData.name}
                 onChange={(e) => {
                   setFormData({ ...formData, name: e.target.value });
@@ -117,13 +118,14 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
               {errors.name && <p className="text-[10px] font-bold text-rose-500 ml-2 uppercase italic">{errors.name}</p>}
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Email Address</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</Label>
               <Input 
                 type="email"
                 className={cn(
-                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
-                  errors.email && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                  "h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none italic placeholder:text-muted-foreground/30",
+                  errors.email && "ring-2 ring-rose-500/50 bg-rose-500/10"
                 )}
+                placeholder="nexus@edu.hub"
                 value={formData.email}
                 onChange={(e) => {
                   setFormData({ ...formData, email: e.target.value });
@@ -133,12 +135,13 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
               {errors.email && <p className="text-[10px] font-bold text-rose-500 ml-2 uppercase italic">{errors.email}</p>}
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Roll / Nexus ID</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Roll / Nexus ID</Label>
               <Input 
                 className={cn(
-                  "h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none",
-                  errors.roll && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                  "h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none italic placeholder:text-muted-foreground/30",
+                  errors.roll && "ring-2 ring-rose-500/50 bg-rose-500/10"
                 )}
+                placeholder="REGID-001"
                 value={formData.roll}
                 onChange={(e) => {
                   setFormData({ ...formData, roll: e.target.value });
@@ -148,7 +151,7 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
               {errors.roll && <p className="text-[10px] font-bold text-rose-500 ml-2 uppercase italic">{errors.roll}</p>}
             </div>
             <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Department Scope</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Department Scope</Label>
               <Select
                 value={formData.department}
                 onValueChange={(value) => {
@@ -157,12 +160,12 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
                 }}
               >
                 <SelectTrigger className={cn(
-                  "w-full h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none appearance-none",
-                  errors.department && "ring-2 ring-rose-500/50 bg-rose-50/50"
+                  "w-full h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none appearance-none italic",
+                  errors.department && "ring-2 ring-rose-500/50 bg-rose-500/10"
                 )}>
                   <SelectValue placeholder="Select Department" />
                 </SelectTrigger>
-                <SelectContent className="rounded-2xl border-secondary/10 shadow-xl font-bold">
+                <SelectContent className="rounded-2xl border-border bg-card shadow-xl font-bold">
                   <SelectItem value="Architecture" className="rounded-xl">Architecture</SelectItem>
                   <SelectItem value="Engineering" className="rounded-xl">Engineering</SelectItem>
                   <SelectItem value="Design" className="rounded-xl">Design</SelectItem>
@@ -174,15 +177,15 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Integrity Status</Label>
+            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Integrity Status</Label>
             <Select
               value={formData.status}
               onValueChange={(value) => setFormData({ ...formData, status: value as "Active" | "Probation" | "Suspended" })}
             >
-              <SelectTrigger className="w-full h-14 px-6 rounded-2xl bg-secondary/5 border-none text-sm font-bold focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none appearance-none">
+              <SelectTrigger className="w-full h-14 px-6 rounded-2xl bg-background/50 border border-border text-sm font-bold text-foreground focus-visible:ring-2 focus-visible:ring-primary/20 transition-all outline-none appearance-none italic">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
-              <SelectContent className="rounded-2xl border-secondary/10 shadow-xl font-bold">
+              <SelectContent className="rounded-2xl border-border bg-card shadow-xl font-bold">
                 <SelectItem value="Active" className="rounded-xl">Active</SelectItem>
                 <SelectItem value="Probation" className="rounded-xl">Probation</SelectItem>
                 <SelectItem value="Suspended" className="rounded-xl">Suspended</SelectItem>
@@ -193,7 +196,7 @@ export default function StudentForm({ isOpen, onClose, onSubmit, initialData }: 
           <Button 
             type="submit"
             disabled={loading}
-            className="w-full h-18 bg-primary hover:opacity-90 text-white rounded-2xl font-black italic uppercase tracking-widest text-sm shadow-xl shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3 border-none"
+            className="w-full h-16 bg-primary hover:opacity-90 text-primary-foreground rounded-2xl font-black italic uppercase tracking-widest text-sm shadow-xl shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3 border-none"
           >
             {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : (initialData ? "Update Registry" : "Confirm Enrollment")}
           </Button>

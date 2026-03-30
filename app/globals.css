@@ -26,42 +26,48 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    /* PAGE BACKGROUND: #0F1B2D */
+    --background: 216 50% 11.8%;
+    /* MAIN TEXT: #E0F7FA */
+    --foreground: 187 71% 92.9%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    /* CARD: #2E4A62 */
+    --card: 208 36% 28.2%;
+    --card-foreground: 187 71% 92.9%;
 
-    /* 🔵 CYAN PRIMARY COLOR */
-    --primary: 190 95% 45%;
-    --primary-foreground: 0 0% 100%;
+    /* PRIMARY: #00BCD4 */
+    --primary: 187 100% 41.6%;
+    --primary-foreground: 216 50% 11.8%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    /* SECONDARY: #90A4AE (Steel Blue) */
+    --secondary: 200 16% 62.4%;
+    --secondary-foreground: 187 71% 92.9%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    /* MUTED: DEEPER BLUE */
+    --muted: 216 50% 18%;
+    --muted-foreground: 200 16% 62.4%;
 
-    --accent: 190 95% 90%;
-    --accent-foreground: 222 47% 11%;
+    /* ACCENT: #26C6DA */
+    --accent: 187 70% 50.2%;
+    --accent-foreground: 216 50% 11.8%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 216 50% 11.8%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 190 95% 45%;
-
+    /* BORDER: #1E3A4C */
+    --border: 203 43% 20.8%;
+    --input: 203 43% 20.8%;
+    --ring: 187 100% 41.6%;
     --radius: 1rem;
 
-    /* Sidebar */
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 20% 92%;
-    --sidebar-primary: 190 95% 45%;
-    --sidebar-accent: 222 40% 18%;
-    --sidebar-border: 222 30% 20%;
+    /* SIDEBAR: #09121D */
+    --sidebar-background: 216 53% 7%;
+    --sidebar-foreground: 187 71% 92.9%;
+    --sidebar-primary: 187 100% 41.6%;
+    --sidebar-accent: 208 36% 28.2%;
+    --sidebar-border: 216 50% 15%;
 
-    --gradient-sidebar: linear-gradient(180deg, #0b1220 0%, #0e1a2f 100%);
+    --gradient-sidebar: linear-gradient(180deg, #09121D 0%, #050B14 100%);
   }
 
   * {
@@ -77,53 +83,45 @@
   }
 }
 
-/* 🌙 Dark Mode */
+/* 🌙 Dark Mode (Legacy support, same as root now) */
 
 .dark {
-  --background: 222 47% 11%;
-  --foreground: 210 40% 98%;
+  --background: 216 50% 11.8%;
+  --foreground: 187 71% 92.9%;
+  --card: 208 36% 28.2%;
+  --card-foreground: 187 71% 92.9%;
+  --primary: 187 100% 41.6%;
+  --primary-foreground: 216 50% 11.8%;
+  --secondary: 200 16% 62.4%;
+  --secondary-foreground: 187 71% 92.9%;
+  --muted: 216 50% 18%;
+  --muted-foreground: 200 16% 62.4%;
+  --accent: 187 70% 50.2%;
+  --accent-foreground: 216 50% 11.8%;
+  --border: 203 43% 20.8%;
+  --input: 203 43% 20.8%;
+  --ring: 187 100% 41.6%;
 
-  --card: 222 47% 13%;
-  --card-foreground: 210 40% 98%;
-
-  --primary: 190 95% 55%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 217 33% 17%;
-  --secondary-foreground: 210 40% 98%;
-
-  --muted: 217 33% 17%;
-  --muted-foreground: 215 20% 65%;
-
-  --accent: 217 33% 20%;
-  --accent-foreground: 210 40% 98%;
-
-  --destructive: 0 63% 31%;
-  --destructive-foreground: 210 40% 98%;
-
-  --border: 217 33% 20%;
-  --input: 217 33% 20%;
-  --ring: 190 95% 55%;
-
-  --sidebar: 222 47% 13%;
-  --sidebar-foreground: 210 40% 98%;
-  --sidebar-primary: 190 95% 55%;
-  --sidebar-accent: 217 33% 17%;
-  --sidebar-border: 217 33% 20%;
+  --sidebar-background: 216 60% 8%;
+  --sidebar-foreground: 187 71% 92.9%;
 }
 
-/* Glass effect */
+/* Glass effect (Deep Blue) */
 
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(46, 74, 98, 0.2);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(224, 247, 250, 0.05);
 }
 
-/* Premium shadow */
-
+/* Premium shadows (Deep Navy) */
 .shadow-premium {
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05),
-              0 10px 10px -5px rgba(0,0,0,0.02);
+  box-shadow: 0 10px 15px -3px rgba(5, 11, 20, 0.4),
+              0 4px 6px -4px rgba(5, 11, 20, 0.2);
 }
+
+.shadow-premium-hover {
+  box-shadow: 0 20px 25px -5px rgba(5, 11, 20, 0.5),
+              0 8px 10px -6px rgba(5, 11, 20, 0.3);
+}

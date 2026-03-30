@@ -34,11 +34,7 @@ export function useTimetables() {
   useEffect(() => {
     if (authLoading || !user) return;
 
-    // Permission Guard
-    if (!ADMIN_ROLES.includes(user.role)) {
-      setLoading(false);
-      return;
-    }
+    // Anyone authenticated can read timetables
 
     const q = query(collection(db, "timetables"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
