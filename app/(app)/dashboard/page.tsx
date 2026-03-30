@@ -21,10 +21,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   dashboardStats,
-  recentActivities,
   upcomingEvents,
 } from "@/data/mockData";
-import { LiveAnnouncements } from "@/components/LiveAnnouncements";
+
 
 
 /* ---------------- Animations ---------------- */
@@ -51,9 +50,9 @@ const iconMap: Record<number, React.ReactNode> = {
 
 /* ---------------- Badge Colors ---------------- */
 const eventTypeColors: Record<string, string> = {
-  exam: "bg-red-100 text-red-600",
-  event: "bg-primary/10 text-primary",
-  sports: "bg-emerald-100 text-emerald-600",
+  exam: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+  event: "bg-primary/10 text-primary border-primary/20",
+  sports: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
 };
 
 /* ====================================================== */
@@ -70,7 +69,7 @@ export default function DashboardPage() {
 
   if (loading || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
@@ -81,8 +80,8 @@ export default function DashboardPage() {
       title="Strategic Dashboard"
       description={`Salutations, ${user?.firstName}! Intelligence overview for the Vidyahub decentralized campus ecosystem is now live.`}
       actions={
-        <div className="flex bg-white/10 p-1.5 rounded-2xl backdrop-blur-md border border-white/20 gap-3">
-           <Button className="h-10 px-6 bg-primary text-primary hover:bg-white/90 hover:text-primary rounded-xl font-bold flex items-center gap-2">
+        <div className="flex bg-card/40 p-1.5 rounded-2xl backdrop-blur-md border border-white/5 gap-3 shadow-premium">
+           <Button className="h-10 px-6 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-black italic flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
             <Bell className="w-4 h-4" />
             V-Intelligence
           </Button>
@@ -99,19 +98,19 @@ export default function DashboardPage() {
         >
           {dashboardStats.map((stat) => (
             <motion.div key={stat.id} variants={item}>
-              <Card className="rounded-[1.5rem] md:rounded-[2rem] border-0 bg-white shadow-sm group hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
-                 <div className="absolute top-0 right-0 p-4 md:p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
+              <Card className="rounded-[1.5rem] md:rounded-[2rem] border-0 bg-card/40 backdrop-blur-sm shadow-premium group hover:shadow-premium-hover transition-all duration-500 overflow-hidden relative">
+                 <div className="absolute top-0 right-0 p-4 md:p-8 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
                     {iconMap[stat.id] && <div className="scale-[1.2] md:scale-[2]">{iconMap[stat.id]}</div>}
                  </div>
                   <CardContent className="p-6 md:p-8 space-y-3 md:space-y-4">
-                    <p className="text-[9px] md:text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{stat.title}</p>
+                    <p className="text-[9px] md:text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em]">{stat.title}</p>
                     <div className="space-y-1">
-                       <h3 className="text-3xl md:text-4xl font-black italic tracking-tighter text-gray-900">{stat.value}</h3>
+                       <h3 className="text-3xl md:text-4xl font-black italic tracking-tighter text-foreground">{stat.value}</h3>
                        <div className="flex items-center gap-2">
-                          <Badge className={`${stat.trend === 'up' ? 'bg-emerald-500' : 'bg-rose-500'} text-white border-0 rounded-lg text-[8px] md:text-[9px] font-black h-5`}>
+                          <Badge className={`${stat.trend === 'up' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'} border-0 rounded-lg text-[8px] md:text-[9px] font-black h-5 uppercase tracking-widest`}>
                              {stat.change}
                           </Badge>
-                          <span className="text-[8px] md:text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Global Shift</span>
+                          <span className="text-[8px] md:text-[9px] font-bold text-muted-foreground/50 uppercase tracking-[0.2em]">Global Shift</span>
                        </div>
                     </div>
                   </CardContent>
@@ -128,21 +127,23 @@ export default function DashboardPage() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-2"
           >
-            <Card className="rounded-[1.5rem] md:rounded-[2.5rem] border-2 shadow-sm bg-white overflow-hidden">
+            <Card className="rounded-[1.5rem] md:rounded-[2.5rem] border-0 shadow-premium bg-card/40 backdrop-blur-sm overflow-hidden">
               <CardHeader className="p-6 md:p-10 pb-4 flex flex-row items-center justify-between">
                 <div className="space-y-1">
-                   <CardTitle className="text-xl md:text-2xl font-black italic tracking-tight uppercase flex items-center gap-3">
+                   <CardTitle className="text-xl md:text-2xl font-black italic tracking-tight uppercase flex items-center gap-3 text-foreground">
                      <Clock className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                      Live Activity Stream
                    </CardTitle>
                 </div>
-                <Button variant="ghost" className="rounded-xl font-bold text-primary italic uppercase tracking-widest text-[10px] md:text-xs">
+                <Button variant="ghost" className="rounded-xl font-bold text-primary italic uppercase tracking-widest text-[10px] md:text-xs hover:bg-primary/10">
                   Full Audit Log
                 </Button>
               </CardHeader>
-
+ 
               <CardContent className="p-6 md:p-10 pt-0">
-                <LiveAnnouncements />
+                <div className="text-center p-12 text-muted-foreground/30 font-black italic uppercase tracking-[0.4em] text-[10px]">
+                  No recent activities recorded in the neural matrix.
+                </div>
               </CardContent>
             </Card>
           </motion.div>
@@ -152,17 +153,17 @@ export default function DashboardPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
           >
-            <Card className="rounded-[1.5rem] md:rounded-[2.5rem] border-0 shadow-sm bg-white overflow-hidden">
+            <Card className="rounded-[1.5rem] md:rounded-[2.5rem] border-0 shadow-premium bg-card/40 backdrop-blur-sm overflow-hidden">
               <CardHeader className="p-6 md:p-10 pb-4 flex flex-row items-center justify-between">
-                <CardTitle className="text-xl md:text-2xl font-black italic tracking-tight uppercase flex items-center gap-3">
+                <CardTitle className="text-xl md:text-2xl font-black italic tracking-tight uppercase flex items-center gap-3 text-foreground">
                   <Calendar className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                   Upcoming
                 </CardTitle>
-                <Button variant="ghost" className="rounded-xl font-bold text-primary italic uppercase tracking-widest text-[10px] md:text-xs">
+                <Button variant="ghost" className="rounded-xl font-bold text-primary italic uppercase tracking-widest text-[10px] md:text-xs hover:bg-primary/10">
                   Calendar
                 </Button>
               </CardHeader>
-
+ 
               <CardContent className="p-6 md:p-10 pt-0">
                 <div className="space-y-3 md:space-y-4">
                   {upcomingEvents.map((event, index) => (
@@ -171,15 +172,15 @@ export default function DashboardPage() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.08 }}
-                      className="flex flex-col gap-2 md:gap-3 rounded-[1rem] md:rounded-[1.5rem] bg-secondary/5 p-4 md:p-6 border border-transparent hover:border-primary/5 transition-all"
+                      className="flex flex-col gap-2 md:gap-3 rounded-[1rem] md:rounded-[1.5rem] bg-background/40 p-4 md:p-6 border border-white/5 hover:border-primary/20 transition-all group"
                     >
                        <div className="flex justify-between items-start">
-                          <Badge className={`${eventTypeColors[event.type] || "bg-secondary text-secondary-foreground"} border-0 h-5 md:h-6 px-2 md:px-3 rounded-lg text-[8px] md:text-[10px] font-black uppercase tracking-widest`}>
+                          <Badge className={`${eventTypeColors[event.type] || "bg-secondary/10 text-secondary border-white/5"} border h-5 md:h-6 px-2 md:px-3 rounded-lg text-[8px] md:text-[10px] font-black uppercase tracking-widest`}>
                             {event.type}
                           </Badge>
-                          <p className="text-[8px] md:text-[10px] font-bold text-muted-foreground uppercase">{event.date}</p>
+                          <p className="text-[8px] md:text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest">{event.date}</p>
                        </div>
-                       <p className="text-xs md:text-sm font-black text-gray-900 uppercase italic tracking-tight">{event.title}</p>
+                       <p className="text-sm md:text-base font-black text-foreground uppercase italic tracking-tight group-hover:text-primary transition-colors">{event.title}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -191,8 +192,8 @@ export default function DashboardPage() {
         {/* ================= CAMPUS HUB ================= */}
         <div className="space-y-8 md:space-y-12">
           <div className="flex items-center gap-4 md:gap-6 px-2 md:px-4">
-             <h2 className="text-2xl md:text-4xl font-black italic tracking-tighter text-gray-900 uppercase">CAMPUS HUB OPERATIONS</h2>
-             <div className="flex-1 h-[2px] bg-secondary/10" />
+             <h2 className="text-2xl md:text-4xl font-black italic tracking-tighter text-foreground uppercase">CAMPUS HUB OPERATIONS</h2>
+             <div className="flex-1 h-[2px] bg-primary/10" />
           </div>
 
           <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -264,16 +265,16 @@ export default function DashboardPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * idx }}
               >
-                <Card className="h-full rounded-[2rem] md:rounded-[3rem] border-0 shadow-sm hover:shadow-2xl transition-all duration-500 group overflow-hidden bg-white">
+                <Card className="h-full rounded-[2rem] md:rounded-[3rem] border-0 shadow-premium hover:shadow-premium-hover transition-all duration-500 group overflow-hidden bg-card/40 backdrop-blur-sm">
                   <div className={`h-1.5 md:h-2 w-full ${section.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
                   <CardHeader className="p-6 md:p-10 pb-6">
                     <div className="flex items-center gap-4 md:gap-6">
-                      <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${section.color}/10 flex items-center justify-center text-${section.color.split('-')[1]}-600 ring-1 ring-${section.color.split('-')[1]}-600/20`}>
+                      <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${section.color}/10 flex items-center justify-center text-foreground ring-1 ring-white/5`}>
                         <section.icon className="h-6 w-6 md:h-7 md:w-7" />
                       </div>
                       <div className="space-y-0.5 md:space-y-1">
-                        <CardTitle className="text-lg md:text-xl font-black uppercase tracking-tight italic">{section.title}</CardTitle>
-                        <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-50">{section.description}</p>
+                        <CardTitle className="text-lg md:text-xl font-black uppercase tracking-tight italic text-foreground">{section.title}</CardTitle>
+                        <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50">{section.description}</p>
                       </div>
                     </div>
                   </CardHeader>
@@ -283,8 +284,8 @@ export default function DashboardPage() {
                         <Button
                           key={link.name}
                           variant="ghost"
-                          className="justify-start h-10 md:h-12 rounded-xl bg-secondary/5 hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/10 transition-all font-bold text-[10px] md:text-xs uppercase tracking-widest px-3 md:px-4"
-                          onClick={() => router.push(link.href)}
+                          className="justify-start h-10 md:h-12 rounded-xl bg-background/40 hover:bg-primary/10 hover:text-primary border border-white/5 hover:border-primary/20 transition-all font-black italic text-[10px] md:text-xs uppercase tracking-widest px-3 md:px-4"
+                          onClick={() => router.push(`/user${link.href}`)}
                         >
                           {link.name}
                         </Button>

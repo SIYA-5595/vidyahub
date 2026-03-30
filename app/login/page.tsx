@@ -1,221 +1,108 @@
 "use client";
 
-<<<<<<< HEAD
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { toast } from "sonner";
-import { auth, db } from "@/lib/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-
-export default function LoginPage() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        toast.success("Identity Verified.");
-        router.push("/dashboard");
-      } else {
-        toast.error("Registry record missing.");
-      }
-    } catch (err: unknown) {
-      console.error(err);
-      const errorMessage = err instanceof Error ? err.message : "Verification failed. Check credentials.";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-=======
-import { ShieldCheck, Mail, Lock, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, ArrowRight, Loader2, Eye, EyeOff, UserCircle, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { auth, db } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-
-const ADMIN_ROLES = ["super_admin", "department_admin", "admin"];
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const cred = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
-      const userDoc = await getDoc(doc(db, "users", cred.user.uid));
+      const userCredential = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
+      const user = userCredential.user;
 
-      if (!userDoc.exists()) {
-        toast.error("No profile found for this account. Contact your administrator.");
-        return;
+      // Fetch user profile to verify existence and role
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const role = userData.role || "student";
+        const isAdmin = ["admin", "super_admin", "department_admin"].includes(role);
+
+        toast.success(`Access Authorized. Proceeding to ${isAdmin ? "Admin" : "Student"} Neural Link...`);
+
+        // Set cookies for middleware
+        const maxAge = 60 * 60 * 24 * 7; 
+        document.cookie = `auth_token=${user.uid}; path=/; max-age=${maxAge}; SameSite=Lax`;
+        document.cookie = `user_role=${isAdmin ? "admin" : "student"}; path=/; max-age=${maxAge}; SameSite=Lax`;
+
+        // Routing
+        router.push(isAdmin ? "/admin/dashboard" : "/user/dashboard");
+      } else {
+        toast.error("User profile node not identified in nexus");
       }
-
-      const role: string = userDoc.data().role || "student";
-      toast.success("Identity verified. Loading dashboard…");
-
-      router.replace(ADMIN_ROLES.includes(role) ? "/admin/dashboard" : "/student/dashboard");
     } catch (error: unknown) {
       const code = (error as { code?: string }).code;
-      let message = "Authentication failed. Please try again.";
+      let message = "Neural link failed. Synchronization aborted.";
       if (code === "auth/invalid-credential" || code === "auth/wrong-password") {
-        message = "Incorrect email or password.";
+        message = "Incorrect credentials. Neural match failure.";
       } else if (code === "auth/user-not-found") {
-        message = "No account found with this email.";
-      } else if (code === "auth/too-many-requests") {
-        message = "Too many failed attempts. Please wait a moment and try again.";
-      } else if (code === "auth/user-disabled") {
-        message = "This account has been disabled. Contact your administrator.";
+        message = "Identity node not identified.";
       }
       toast.error(message);
     } finally {
       setLoading(false);
->>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
     }
   };
 
   return (
-<<<<<<< HEAD
-    <div className="flex min-h-screen items-center justify-center bg-[#f0f4f8] p-4">
-      <Card className="w-full max-w-md shadow-2xl bg-white rounded-[2.5rem] border-0 overflow-hidden">
-        <div className="h-2 bg-primary w-full" />
-        <CardHeader className="text-center p-10 pt-12">
-          <CardTitle className="text-4xl font-black italic tracking-tighter uppercase text-slate-900">
-            VidyaHub
-          </CardTitle>
-          <CardDescription className="text-[10px] font-black uppercase tracking-[0.2em] mt-2">
-            Nexus Authenticator
-          </CardDescription>
-        </CardHeader>
-
-        <form onSubmit={handleLogin} className="px-10 pb-10">
-          <CardContent className="space-y-6 px-0">
-            <div className="space-y-2">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Identity</Label>
-              <Input
-                type="email"
-                placeholder="node@vidyahub.edu"
-                className="h-14 rounded-2xl bg-slate-50 border-0 focus-visible:ring-2 focus-visible:ring-primary/20 font-bold"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between ml-1">
-                  <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500">Encryption</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-[9px] font-black uppercase tracking-widest text-primary hover:opacity-70"
-                  >
-                    Reset?
-                  </Link>
-              </div>
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  className="h-14 rounded-2xl bg-slate-50 border-0 focus-visible:ring-2 focus-visible:ring-primary/20 font-bold pr-12"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-          </CardContent>
-
-          <CardFooter className="flex flex-col space-y-6 pt-6 px-0">
-            <Button
-              className="w-full h-16 rounded-2xl bg-[#0b1220] hover:bg-[#162238] text-white font-black italic uppercase tracking-widest text-xs shadow-xl transition-all active:scale-[0.98]"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                "Initiate Sync"
-              )}
-            </Button>
-
-            <div className="text-center">
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mr-2">New Node?</span>
-              <Link href="/signup" className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline italic">
-                Generate Access
-              </Link>
-            </div>
-          </CardFooter>
-        </form>
-      </Card>
-=======
-    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Decorative orbs */}
-      <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] bg-primary/5 rounded-full blur-[120px]" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/5 rounded-full blur-[120px]" />
+    <div className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
+      {/* BACKGROUND ELEMENTS */}
+      <div className="absolute top-[-20%] right-[-10%] w-[80%] h-[80%] bg-primary/10 rounded-full blur-[150px] animate-pulse pointer-events-none" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[80%] h-[80%] bg-primary/5 rounded-full blur-[150px] animate-pulse pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(30,136,229,0.03),transparent_70%)] pointer-events-none" />
 
       <div className="w-full max-w-lg relative z-10">
-        {/* Branding */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 mb-6 ring-1 ring-primary/20 mx-auto">
-            <ShieldCheck className="h-10 w-10 text-primary" />
+        <motion.div 
+           initial={{ opacity: 0, scale: 0.95 }}
+           animate={{ opacity: 1, scale: 1 }}
+           transition={{ duration: 0.8 }}
+           className="text-center mb-12"
+        >
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-card/60 backdrop-blur-xl mb-8 border border-white/10 shadow-premium group hover:rotate-12 transition-transform duration-700 relative overflow-hidden">
+            <div className="absolute inset-x-0 bottom-0 h-1.5 bg-primary animate-pulse" />
+            <ShieldCheck size={48} className="text-primary group-hover:scale-110 transition-transform" />
           </div>
-          <h1 className="text-4xl font-black italic tracking-tighter text-slate-900 uppercase">
-            VidyaHub Admin
+          <h1 className="text-5xl font-black italic tracking-tighter text-foreground uppercase leading-none">
+            VIDYAHUB NEXUS
           </h1>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mt-2">
-            Enterprise Security Control Center
+          <p className="text-[12px] font-black uppercase tracking-[0.5em] text-muted-foreground/40 mt-4 italic leading-none">
+            Secure Academy Protocol // Identification Required
           </p>
-        </div>
+        </motion.div>
 
-        {/* Card */}
-        <div className="bg-white/80 backdrop-blur-3xl p-12 rounded-[3.5rem] shadow-2xl border border-white/50">
-          <form className="space-y-8" onSubmit={handleSubmit}>
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
-                Email Address
+        <motion.div 
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8, delay: 0.2 }}
+           className="bg-card/40 backdrop-blur-3xl p-16 rounded-[4rem] shadow-premium border border-white/5 relative overflow-hidden group hover:shadow-premium-hover transition-all duration-700"
+        >
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none group-hover:scale-125 transition-transform duration-1000" />
+          
+          <form className="space-y-10 relative z-10" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 ml-2 italic leading-none">
+                Identity Mail Node
               </label>
-              <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+              <div className="relative group/input">
+                <Mail className="absolute left-8 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground/20 group-focus-within/input:text-primary transition-all duration-700" />
                 <input
                   type="email"
-                  placeholder="admin@vidyahub.edu"
-                  className="w-full h-14 pl-12 pr-4 rounded-2xl bg-secondary/10 border-none text-sm font-bold placeholder:text-slate-300 focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  placeholder="IDENTITY@VIDYAHUB.EDU"
+                  className="w-full h-16 pl-20 pr-8 rounded-2xl bg-background/50 border border-white/5 text-lg font-black italic uppercase tracking-tight placeholder:text-muted-foreground/10 focus:ring-4 focus:ring-primary/10 transition-all outline-none text-foreground placeholder:tracking-widest"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -223,17 +110,21 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Password */}
-            <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">
-                Password
-              </label>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
+            <div className="space-y-4">
+              <div className="flex justify-between items-center ml-2">
+                 <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 italic leading-none">
+                    Security Passkey
+                 </label>
+                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/40 hover:text-primary cursor-pointer italic transition-colors" onClick={() => router.push('/forgot-password')}>
+                    Recovery Link?
+                 </span>
+              </div>
+              <div className="relative group/input">
+                <Lock className="absolute left-8 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground/20 group-focus-within/input:text-primary transition-all duration-700" />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••••••"
-                  className="w-full h-14 pl-12 pr-12 rounded-2xl bg-secondary/10 border-none text-sm font-bold placeholder:text-slate-300 focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  className="w-full h-16 pl-20 pr-16 rounded-2xl bg-background/50 border border-white/5 text-lg font-black italic uppercase tracking-tight placeholder:text-muted-foreground/10 focus:ring-4 focus:ring-primary/10 transition-all outline-none text-foreground"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -241,43 +132,57 @@ export default function LoginPage() {
                 <button
                   type="button"
                   tabIndex={-1}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors"
+                  className="absolute right-8 top-1/2 -translate-y-1/2 text-muted-foreground/20 hover:text-primary transition-all"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? <EyeOff size={24} /> : <Eye size={24} />}
                 </button>
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full h-14 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white rounded-2xl font-black italic uppercase tracking-widest text-xs shadow-xl shadow-slate-900/30 transition-all active:scale-[0.98] flex items-center justify-center gap-3"
+              className="w-full h-20 bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground rounded-[2rem] font-black italic uppercase tracking-widest text-[12px] shadow-2xl shadow-primary/30 transition-all active:scale-[0.98] flex items-center justify-center gap-6 group/btn border-none relative overflow-hidden"
             >
+              <div className="absolute inset-x-0 bottom-0 h-1.5 bg-white/20 animate-pulse" />
               {loading ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 size={32} className="animate-spin" />
               ) : (
                 <>
-                  Sign In
-                  <ArrowRight className="h-5 w-5" />
+                  INITIALIZE NEURAL LINK
+                  <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform duration-500" />
                 </>
               )}
-            </button>
+            </Button>
           </form>
 
-          <p className="text-center mt-8 text-[10px] text-slate-400 font-medium">
-            Don&apos;t have access?{" "}
-            <span className="font-black text-slate-600">
-              Contact your administrator for an invite.
-            </span>
-          </p>
-        </div>
+          <div className="text-center mt-12 relative z-10">
+             <div className="flex items-center gap-6 mb-8">
+                <div className="flex-grow h-px bg-white/5" />
+                <p className="text-[10px] font-black text-muted-foreground/20 uppercase tracking-[0.5em] italic">Or Identity Manifestation</p>
+                <div className="flex-grow h-px bg-white/5" />
+             </div>
+             <p className="text-[12px] font-black text-muted-foreground/40 italic leading-none">
+                Awaiting clearance?{" "}
+                <span className="text-primary hover:text-primary/80 cursor-pointer underline transition-all font-black uppercase tracking-[0.1em]" onClick={() => router.push('/signup')}>
+                  REGISTER NEW NODE
+                </span>
+             </p>
+          </div>
+        </motion.div>
 
-        <p className="text-center mt-10 text-[10px] font-black text-slate-400 uppercase tracking-widest opacity-60">
-          Authorized Nodes Only • Global Audit Log Active
-        </p>
+        <motion.div 
+           initial={{ opacity: 0 }}
+           animate={{ opacity: 1 }}
+           transition={{ delay: 1 }}
+           className="mt-12 text-center"
+        >
+           <p className="text-[10px] font-black uppercase tracking-[1em] text-muted-foreground/10 leading-none">
+              SYSTEM v2.5.0 // CORE DEPLOYED
+           </p>
+        </motion.div>
       </div>
->>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
     </div>
   );
 }

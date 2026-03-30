@@ -1,70 +1,33 @@
-<<<<<<< HEAD
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Gideon_Roman } from "next/font/google";
 import type { Metadata } from "next";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Providers } from "./providers";
 
-const inter = Inter({
+const gideon = Gideon_Roman({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
   title: "VidyaHub - University Management System",
   description: "Manage your university life with ease.",
-=======
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "./providers";
-import { MainLayout } from "@/components/layout/MainLayout";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "VidyaHub | Administrative Intelligence",
-  description: "Centralized campus management and administrative portal for VidyaHub ecosystem.",
->>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
 };
 
 export default function RootLayout({
   children,
-<<<<<<< HEAD
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} min-h-screen bg-background antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${gideon.className} min-h-screen bg-background antialiased`}>
         <Providers>
           <TooltipProvider>
             {children}
-            <Sonner />
+            <Sonner position="top-center" expand={true} richColors />
           </TooltipProvider>
-=======
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-          <MainLayout>
-            {children}
-          </MainLayout>
->>>>>>> 7b5adfad5317e2e395ba8d84302ecc9d67bc1901
         </Providers>
       </body>
     </html>

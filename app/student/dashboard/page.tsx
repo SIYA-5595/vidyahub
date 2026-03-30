@@ -70,13 +70,13 @@ export default function StudentDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#f8fafc]">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full animate-pulse" />
             <Loader2 className="h-12 w-12 text-primary animate-spin relative" />
           </div>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">
             Loading Dashboard…
           </p>
         </div>
@@ -97,18 +97,18 @@ export default function StudentDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
       {/* ── Top Bar ── */}
-      <header className="bg-white border-b border-slate-100 px-6 md:px-10 py-5 flex items-center justify-between shadow-sm sticky top-0 z-40">
+      <header className="bg-background/80 backdrop-blur-xl border-b border-border px-6 md:px-10 py-5 flex items-center justify-between shadow-sm sticky top-0 z-40">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center">
             <ShieldCheck className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-slate-400 block">
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-muted-foreground block">
               VidyaHub
             </span>
-            <span className="text-sm font-black italic text-slate-900 uppercase tracking-tight">
+            <span className="text-sm font-black italic text-foreground uppercase tracking-tight">
               Student Portal
             </span>
           </div>
@@ -116,10 +116,10 @@ export default function StudentDashboard() {
 
         <div className="flex items-center gap-4">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-bold text-slate-800 leading-none">
+            <p className="text-xs font-bold text-foreground leading-none">
               {user.firstName} {user.lastName}
             </p>
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 capitalize">
+            <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-1 capitalize">
               {user.role.replace(/_/g, " ")}
             </p>
           </div>
@@ -128,7 +128,7 @@ export default function StudentDashboard() {
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-500 text-[10px] font-black uppercase tracking-widest transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-card border border-border hover:bg-rose-500/10 hover:text-rose-500 text-muted-foreground text-[10px] font-black uppercase tracking-widest transition-all"
           >
             <LogOut className="h-4 w-4" />
             <span className="hidden sm:block">Sign Out</span>
@@ -140,10 +140,10 @@ export default function StudentDashboard() {
       <main className="max-w-5xl mx-auto p-6 md:p-10 space-y-10">
         {/* Welcome */}
         <div className="space-y-1 pt-2">
-          <h1 className="text-4xl font-black italic tracking-tighter text-slate-900 uppercase">
+          <h1 className="text-4xl font-black italic tracking-tighter text-foreground uppercase">
             Welcome, {user.firstName}!
           </h1>
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground">
             Student Dashboard • {today}
           </p>
         </div>
@@ -153,17 +153,17 @@ export default function StudentDashboard() {
           {CARDS.map((card) => (
             <div
               key={card.label}
-              className="group bg-white rounded-[2rem] border border-slate-100 p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer relative overflow-hidden"
+              className="group bg-card rounded-[2rem] border border-border p-6 shadow-premium hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer relative overflow-hidden"
             >
-              <div className={`absolute top-0 right-0 w-24 h-24 ${card.color} rounded-bl-[3rem] opacity-40 -mr-6 -mt-6`} />
-              <div className={`h-12 w-12 rounded-2xl ${card.color} flex items-center justify-center mb-4 relative z-10 group-hover:scale-110 transition-transform duration-300`}>
-                <card.icon className={`h-6 w-6 ${card.iconColor}`} />
+              <div className={`absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[3rem] opacity-40 -mr-6 -mt-6`} />
+              <div className={`h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 relative z-10 group-hover:scale-110 transition-transform duration-300`}>
+                <card.icon className={`h-6 w-6 text-primary`} />
               </div>
-              <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 relative z-10">
+              <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground relative z-10">
                 {card.label}
               </p>
-              <p className="text-lg font-black text-slate-900 mt-1 relative z-10">{card.value}</p>
-              <p className="text-[10px] text-slate-400 font-medium mt-0.5 relative z-10">{card.sub}</p>
+              <p className="text-lg font-black text-foreground mt-1 relative z-10">{card.value}</p>
+              <p className="text-[10px] text-muted-foreground font-medium mt-0.5 relative z-10">{card.sub}</p>
             </div>
           ))}
         </div>
@@ -171,30 +171,30 @@ export default function StudentDashboard() {
         {/* Account details + Quick stats */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Account info */}
-          <div className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm space-y-5">
-            <h2 className="text-lg font-black italic uppercase tracking-tight text-slate-900">
+          <div className="bg-card rounded-[2rem] border border-border p-8 shadow-premium space-y-5">
+            <h2 className="text-lg font-black italic uppercase tracking-tight text-foreground">
               Account Details
             </h2>
             <div className="space-y-3">
               {[
-                { label: "Full Name", value: user.name },
+                { label: "Full Name", value: `${user.firstName} ${user.lastName}` },
                 { label: "Email", value: user.email },
                 { label: "Role", value: user.role.replace(/_/g, " ") },
                 { label: "Status", value: "Active" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between py-3 border-b border-slate-50 last:border-0">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                <div key={item.label} className="flex items-center justify-between py-3 border-b border-border/50 last:border-0">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
                     {item.label}
                   </p>
-                  <p className="text-sm font-bold text-slate-800 capitalize">{item.value}</p>
+                  <p className="text-sm font-bold text-foreground capitalize">{item.value}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Activity feed */}
-          <div className="bg-white rounded-[2rem] border border-slate-100 p-8 shadow-sm space-y-5">
-            <h2 className="text-lg font-black italic uppercase tracking-tight text-slate-900 flex items-center gap-2">
+          <div className="bg-card rounded-[2rem] border border-border p-8 shadow-premium space-y-5">
+            <h2 className="text-lg font-black italic uppercase tracking-tight text-foreground flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
               Recent Activity
             </h2>
@@ -204,13 +204,13 @@ export default function StudentDashboard() {
                 { text: "Welcome to VidyaHub!", time: "Today", icon: Bell },
                 { text: "Profile initialized", time: "Today", icon: Clock },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-slate-50 transition-colors">
+                <div key={i} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-background/50 transition-colors">
                   <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                     <item.icon className="h-4 w-4 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-slate-700 truncate">{item.text}</p>
-                    <p className="text-[10px] text-slate-400 font-medium">{item.time}</p>
+                    <p className="text-xs font-bold text-foreground truncate">{item.text}</p>
+                    <p className="text-[10px] text-muted-foreground font-medium">{item.time}</p>
                   </div>
                 </div>
               ))}
